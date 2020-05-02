@@ -1,35 +1,34 @@
 package com.aguillen.supermarketshopping.adapter;
 
-import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.aguillen.supermarketshopping.R;
 import com.aguillen.supermarketshopping.model.Article;
 
 import java.util.List;
 
-import com.aguillen.supermarketshopping.R;
-
 public class ArticlesListAdapter extends BaseAdapter {
 
-    protected Activity activity;
-    protected List<Article> item;
+    private Context context;
+    private List<Article> articles;
+    private LayoutInflater inflter;
 
-    public ArticlesListAdapter(Activity activity, List<Article> item) {
-        this.activity = activity;
-        this.item = item;
-    }
-
-    public void clear() {
-        item.clear();
+    public ArticlesListAdapter(Context context, List<Article> articles) {
+        this.context = context;
+        this.articles = articles;
+        inflter = (LayoutInflater.from(context));
     }
 
     @Override
     public int getCount() {
-        return item.size();
+        return articles.size();
     }
 
     @Override
@@ -44,6 +43,19 @@ public class ArticlesListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        return null;
+
+        view = inflter.inflate(R.layout.activity_row_article, null);
+
+        TextView name = (TextView) view.findViewById(R.id.tv_name);
+        TextView description = (TextView) view.findViewById(R.id.tv_description);
+        TextView category = (TextView) view.findViewById(R.id.tv_category);
+        ImageView image = (ImageView) view.findViewById(R.id.iv_image) ;
+
+        name.setText(articles.get(i).getName());
+        description.setText(articles.get(i).getDescription());
+        category.setText(articles.get(i).getCategory());
+        image.setImageResource(articles.get(i).getImage());
+
+        return view;
     }
 }

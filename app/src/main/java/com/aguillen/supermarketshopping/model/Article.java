@@ -6,14 +6,16 @@ public class Article {
     private String name;
     private String description;
     private String category;
+    private int image;
 
     public Article() {}
 
-    public Article(Integer id, String name, String description, String category) {
+    public Article(Integer id, String name, String description, String category, int image) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.category = category;
+        this.image = image;
     }
 
     public Integer getId() {
@@ -48,4 +50,11 @@ public class Article {
         this.category = category;
     }
 
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
 }

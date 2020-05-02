@@ -1,5 +1,7 @@
 package com.aguillen.supermarketshopping.service;
 
+import android.util.Log;
+
 import com.aguillen.supermarketshopping.model.Article;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class ArticleServiceImpl {
 
             @Override
             public void onFailure(Call<List<Article>> call, Throwable t) {
-                System.out.println("fallo");
+                Log.e("Connection error: ", t.getMessage());
             }
         });
 

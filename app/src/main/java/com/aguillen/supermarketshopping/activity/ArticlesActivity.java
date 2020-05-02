@@ -3,6 +3,7 @@ package com.aguillen.supermarketshopping.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.aguillen.supermarketshopping.R;
+import com.aguillen.supermarketshopping.adapter.ArticlesListAdapter;
 import com.aguillen.supermarketshopping.model.Article;
 import com.aguillen.supermarketshopping.service.ArticleServiceImpl;
 
@@ -16,7 +17,6 @@ import java.util.List;
 public class ArticlesActivity extends AppCompatActivity {
 
     ListView simpleList;
-    String articlesList[] = {"Carne", "Galletitas", "Jabon", "Harina", "Detergente", "Frutas"};
 
     private ArticleServiceImpl service;
 
@@ -33,7 +33,14 @@ public class ArticlesActivity extends AppCompatActivity {
 
         Log.i("articles: ",articles.toString());
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_article, R.id.tv_text, articlesList);
-        simpleList.setAdapter(arrayAdapter);
+        if(articles.isEmpty() || articles == null) {
+            articles.add(new Article(1, "Lavandina", "Ayudin", "Limpieza", R.drawable.lavandina));
+            articles.add(new Article(1, "Jabon de tocador", "Rexona", "Limpieza", R.drawable.jabon));
+            articles.add(new Article(1, "Desodorante", "Dove", "Limpieza", R.drawable.desodorante));
+        }
+
+        ArticlesListAdapter adapter = new ArticlesListAdapter(getApplicationContext(), articles);
+        simpleList.setAdapter(adapter);
+
     }
 }
