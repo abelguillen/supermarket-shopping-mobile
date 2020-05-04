@@ -10,7 +10,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.aguillen.supermarketshopping"
+        applicationId "com.aguillen.supermarketshoppingmobile"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1

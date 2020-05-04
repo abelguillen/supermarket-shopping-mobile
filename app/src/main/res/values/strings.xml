@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Supermarket Shopping</string>
+    <string name="category_prompt">Elige una categoria</string>
+
+    <string-array name="category_arrays">
+        <item>Limpieza</item>
+        <item>Comestible</item>
+    </string-array>
 </resources>

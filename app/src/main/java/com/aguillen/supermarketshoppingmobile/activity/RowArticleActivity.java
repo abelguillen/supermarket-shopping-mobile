@@ -1,10 +1,10 @@
-package com.aguillen.supermarketshopping.activity;
+package com.aguillen.supermarketshoppingmobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.aguillen.supermarketshopping.R;
+import com.aguillen.supermarketshoppingmobile.R;
 
 public class RowArticleActivity extends AppCompatActivity {
 

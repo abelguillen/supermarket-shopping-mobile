@@ -1,4 +1,4 @@
-package com.aguillen.supermarketshopping.model;
+package com.aguillen.supermarketshoppingmobile.model;
 
 public class Article {
 
@@ -12,6 +12,13 @@ public class Article {
 
     public Article(Integer id, String name, String description, String category, int image) {
         this.id = id;
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.image = image;
+    }
+
+    public Article(String name, String description, String category, int image) {
         this.name = name;
         this.description = description;
         this.category = category;

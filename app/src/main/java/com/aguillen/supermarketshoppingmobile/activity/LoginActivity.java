@@ -1,4 +1,4 @@
-package com.aguillen.supermarketshopping.activity;
+package com.aguillen.supermarketshoppingmobile.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.aguillen.supermarketshopping.R;
+import com.aguillen.supermarketshoppingmobile.R;
 
 public class LoginActivity extends AppCompatActivity {
 

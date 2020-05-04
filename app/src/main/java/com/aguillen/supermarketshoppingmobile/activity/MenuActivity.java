@@ -1,8 +1,8 @@
-package com.aguillen.supermarketshopping.activity;
+package com.aguillen.supermarketshoppingmobile.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.aguillen.supermarketshopping.R;
+import com.aguillen.supermarketshoppingmobile.R;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +27,7 @@ public class MenuActivity extends AppCompatActivity {
         btArticles.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MenuActivity.this, ArticlesActivity.class);
+                Intent i = new Intent(MenuActivity.this, ArticlesListActivity.class);
                 finish();
                 startActivity(i);
             }

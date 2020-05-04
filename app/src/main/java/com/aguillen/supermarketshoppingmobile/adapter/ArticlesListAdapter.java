@@ -1,7 +1,6 @@
-package com.aguillen.supermarketshopping.adapter;
+package com.aguillen.supermarketshoppingmobile.adapter;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aguillen.supermarketshopping.R;
-import com.aguillen.supermarketshopping.model.Article;
+import com.aguillen.supermarketshoppingmobile.R;
+import com.aguillen.supermarketshoppingmobile.model.Article;
 
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class ArticlesListAdapter extends BaseAdapter {
         name.setText(articles.get(i).getName());
         description.setText(articles.get(i).getDescription());
         category.setText(articles.get(i).getCategory());
-        image.setImageResource(articles.get(i).getImage());
+        image.setImageResource(R.drawable.noimage);
 
         return view;
     }
