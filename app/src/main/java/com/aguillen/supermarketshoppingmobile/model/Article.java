@@ -6,11 +6,11 @@ public class Article {
     private String name;
     private String description;
     private String category;
-    private int image;
+    private String image;
 
     public Article() {}
 
-    public Article(Integer id, String name, String description, String category, int image) {
+    public Article(Integer id, String name, String description, String category, String image) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -18,7 +18,7 @@ public class Article {
         this.image = image;
     }
 
-    public Article(String name, String description, String category, int image) {
+    public Article(String name, String description, String category, String image) {
         this.name = name;
         this.description = description;
         this.category = category;
@@ -57,11 +57,11 @@ public class Article {
         this.category = category;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

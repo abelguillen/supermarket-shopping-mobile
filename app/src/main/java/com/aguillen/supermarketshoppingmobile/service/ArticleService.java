@@ -6,8 +6,10 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ArticleService {
 
@@ -16,5 +18,8 @@ public interface ArticleService {
 
     @POST("/article/create")
     Call<Article> create(@Body Article article);
+
+    @DELETE("/article/delete")
+    Call<Boolean> delete(@Query("id") Integer id);
 
 }

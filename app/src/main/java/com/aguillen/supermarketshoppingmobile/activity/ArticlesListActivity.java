@@ -1,17 +1,21 @@
 package com.aguillen.supermarketshoppingmobile.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.aguillen.supermarketshoppingmobile.R;
 import com.aguillen.supermarketshoppingmobile.adapter.ArticlesListAdapter;
 import com.aguillen.supermarketshoppingmobile.model.Article;
 import com.aguillen.supermarketshoppingmobile.service.ArticleService;
+import com.aguillen.supermarketshoppingmobile.util.Environment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -70,6 +74,13 @@ public class ArticlesListActivity extends AppCompatActivity {
     }
 
     private void getArticles(Context context) {
+        /*String BASE_URL = "";
+        try {
+            BASE_URL = Environment.getHost();
+        } catch (Exception e) {
+            Log.e("Url: ", "No se pudo obtener la URL");
+        }*/
+
         String BASE_URL = "http://192.168.100.158:8080";
 
         articles = new ArrayList<Article>();
@@ -94,25 +105,7 @@ public class ArticlesListActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Article>> call, Throwable t) {
-                Log.e("Connection error: ", t.getMessage());
-
-                // Prueba local
-                if(articles.isEmpty() || articles == null) {
-                    articles.add(new Article(1, "Lavandina", "Ayudin", "Limpieza", 1));
-                    articles.add(new Article(1, "Jabon de tocador", "Rexona", "Limpieza", 1));
-                    articles.add(new Article(1, "Desodorante", "Dove", "Limpieza", 1));
-                    articles.add(new Article(1, "Lavandina", "Ayudin", "Limpieza", 1));
-                    articles.add(new Article(1, "Jabon de tocador", "Rexona", "Limpieza", 1));
-                    articles.add(new Article(1, "Desodorante", "Dove", "Limpieza", 1));
-                    articles.add(new Article(1, "Lavandina", "Ayudin", "Limpieza", 1));
-                    articles.add(new Article(1, "Jabon de tocador", "Rexona", "Limpieza", 1));
-                    articles.add(new Article(1, "Desodorante", "Dove", "Limpieza", 1));
-                    articles.add(new Article(1, "Lavandina", "Ayudin", "Limpieza", 1));
-                    articles.add(new Article(1, "Jabon de tocador", "Rexona", "Limpieza", 1));
-                    articles.add(new Article(1, "Desodorante", "Dove", "Limpieza", 1));
-                }
-                adapter = new ArticlesListAdapter(context, articles);
-                lvArticles.setAdapter(adapter);
+                Log.e("Get Articles error: ", t.getMessage());
             }
 
         });

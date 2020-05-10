@@ -1,17 +1,36 @@
 package com.aguillen.supermarketshoppingmobile.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aguillen.supermarketshoppingmobile.R;
-import com.aguillen.supermarketshoppingmobile.model.Article;
+import androidx.appcompat.app.AlertDialog;
 
+import com.aguillen.supermarketshoppingmobile.R;
+import com.aguillen.supermarketshoppingmobile.activity.ArticlesListActivity;
+import com.aguillen.supermarketshoppingmobile.activity.MenuActivity;
+import com.aguillen.supermarketshoppingmobile.model.Article;
+import com.aguillen.supermarketshoppingmobile.service.ArticleService;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ArticlesListAdapter extends BaseAdapter {
 
@@ -32,16 +51,16 @@ public class ArticlesListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return articles.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return articles.get(i).getId();
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int i, View view, ViewGroup parent) {
 
         view = inflter.inflate(R.layout.activity_row_article, null);
 
@@ -49,12 +68,66 @@ public class ArticlesListAdapter extends BaseAdapter {
         TextView description = (TextView) view.findViewById(R.id.tv_description);
         TextView category = (TextView) view.findViewById(R.id.tv_category);
         ImageView image = (ImageView) view.findViewById(R.id.iv_image) ;
+        Button btDeleteArticle = (Button) view.findViewById(R.id.bt_delete_article);
+
+        btDeleteArticle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext(), R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+                builder.setTitle("Eliminar Articulo");
+                builder.setMessage("¿Esta seguro que desea eliminar el articulo?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteArticle(articles.get(i));
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) { }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.background_light);
+                return;
+            }
+        });
 
         name.setText(articles.get(i).getName());
         description.setText(articles.get(i).getDescription());
         category.setText(articles.get(i).getCategory());
-        image.setImageResource(R.drawable.noimage);
+
+        byte[] decodedString = Base64.decode(articles.get(i).getImage(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+        image.setImageBitmap(decodedByte);
 
         return view;
+    }
+
+    public void deleteArticle(Article article) {
+        String BASE_URL = "http://192.168.100.158:8080";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ArticleService service = retrofit.create(ArticleService.class);
+        Call<Boolean> call = service.delete(article.getId());
+
+        call.enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                articles.remove(article);
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                Log.e("Delete Article error: ", t.getMessage());
+            }
+        });
     }
 }
