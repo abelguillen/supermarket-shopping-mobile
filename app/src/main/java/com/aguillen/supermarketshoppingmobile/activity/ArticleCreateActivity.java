@@ -1,9 +1,11 @@
 package com.aguillen.supermarketshoppingmobile.activity;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -78,7 +80,23 @@ public class ArticleCreateActivity extends AppCompatActivity {
                 String description = etDescription.getText().toString();
                 String category = sCategory.getSelectedItem().toString();
                 Article article = new Article(name, description, category, encodedImage);
-                saveArticles(getApplicationContext(), article);
+                if(validateArticle(article)) {
+                    saveArticles(getApplicationContext(), article);
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ArticleCreateActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+                    builder.setTitle("Nuevo Articulo");
+                    builder.setMessage("El nombre del articulo no puede ser vacio.");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    dialog.getWindow().setBackgroundDrawableResource(android.R.color.background_light);
+                    return;
+                }
             }
         });
 
@@ -95,6 +113,14 @@ public class ArticleCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) { finish(); }
         });
+    }
+
+    private boolean validateArticle(Article article) {
+        if(!article.getName().isEmpty() && article.getName() != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void uploadImage() {
@@ -130,14 +156,12 @@ public class ArticleCreateActivity extends AppCompatActivity {
 
     private void saveArticles(Context context, Article article) {
 
-        /*String BASE_URL = "";
+        String BASE_URL = "";
         try {
             BASE_URL = Environment.getHost();
-        } catch (Exception e) {
-            Log.e("Url: ", "No se pudo obtener la URL");
-        }*/
-
-        String BASE_URL = "http://192.168.100.158:8080";
+        } catch (Exception ex) {
+            Log.e("Connection Error", ex.getMessage());
+        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

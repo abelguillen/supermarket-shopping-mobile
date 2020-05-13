@@ -2,7 +2,6 @@ package com.aguillen.supermarketshoppingmobile.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -18,12 +17,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.aguillen.supermarketshoppingmobile.R;
-import com.aguillen.supermarketshoppingmobile.activity.ArticlesListActivity;
-import com.aguillen.supermarketshoppingmobile.activity.MenuActivity;
 import com.aguillen.supermarketshoppingmobile.model.Article;
 import com.aguillen.supermarketshoppingmobile.service.ArticleService;
+import com.aguillen.supermarketshoppingmobile.util.Environment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -107,7 +104,12 @@ public class ArticlesListAdapter extends BaseAdapter {
     }
 
     public void deleteArticle(Article article) {
-        String BASE_URL = "http://192.168.100.158:8080";
+        String BASE_URL = "";
+        try {
+            BASE_URL = Environment.getHost();
+        } catch (Exception ex) {
+            Log.e("Connection Error", ex.getMessage());
+        }
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

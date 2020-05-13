@@ -5,7 +5,7 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/compras2"
+    android:background="@drawable/compras"
     tools:context="com.aguillen.supermarketshoppingmobile.activity.LoginActivity">
 
     <ImageView
@@ -21,9 +21,11 @@
         style="@style/Widget.AppCompat.EditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/border"
         android:ems="10"
         android:hint="Usuario"
         android:inputType="textPersonName"
+        android:padding="2dp"
         android:text="abel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,9 +37,11 @@
         android:id="@+id/et_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/border"
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
+        android:padding="2dp"
         android:text="abel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

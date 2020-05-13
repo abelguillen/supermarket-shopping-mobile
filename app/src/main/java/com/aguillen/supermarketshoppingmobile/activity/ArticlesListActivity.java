@@ -15,9 +15,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,7 @@ public class ArticlesListActivity extends AppCompatActivity {
     Button btBack;
     Button btExit;
     Button btNewArticle;
+    ProgressBar pbArticlesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class ArticlesListActivity extends AppCompatActivity {
         btBack = (Button) findViewById(R.id.bt_back);
         btExit = (Button) findViewById(R.id.bt_exit);
         btNewArticle = (Button) findViewById(R.id.bt_new_article);
+        pbArticlesList = (ProgressBar) findViewById(R.id.pb_articles_list);
 
         btExit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,14 +76,12 @@ public class ArticlesListActivity extends AppCompatActivity {
     }
 
     private void getArticles(Context context) {
-        /*String BASE_URL = "";
+        String BASE_URL = "";
         try {
             BASE_URL = Environment.getHost();
-        } catch (Exception e) {
-            Log.e("Url: ", "No se pudo obtener la URL");
-        }*/
-
-        String BASE_URL = "http://192.168.100.158:8080";
+        } catch (Exception ex) {
+            Log.e("Connection Error", ex.getMessage());
+        }
 
         articles = new ArrayList<Article>();
 
@@ -96,6 +96,7 @@ public class ArticlesListActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Article>>() {
             @Override
             public void onResponse(Call<List<Article>> call, Response<List<Article>> response) {
+                pbArticlesList.setVisibility(View.INVISIBLE);
                 for(Article article : response.body()) {
                     articles.add(article);
                 }
@@ -105,7 +106,21 @@ public class ArticlesListActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Article>> call, Throwable t) {
+                pbArticlesList.setVisibility(View.INVISIBLE);
                 Log.e("Get Articles error: ", t.getMessage());
+                AlertDialog.Builder builder = new AlertDialog.Builder(ArticlesListActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+                builder.setTitle("Error de conexion");
+                builder.setMessage("Ha ocurrido un error al intentar obtener informacion de la base de datos.");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                dialog.getWindow().setBackgroundDrawableResource(android.R.color.background_light);
+                return;
             }
 
         });

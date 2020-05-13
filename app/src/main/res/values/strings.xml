@@ -3,7 +3,11 @@
     <string name="category_prompt">Elige una categoria</string>
 
     <string-array name="category_arrays">
+        <item>Carnes</item>
+        <item>Comestibles</item>
+        <item>Frutas y verduras</item>
+        <item>Higiene</item>
         <item>Limpieza</item>
-        <item>Comestible</item>
+        <item>Varios</item>
     </string-array>
 </resources>

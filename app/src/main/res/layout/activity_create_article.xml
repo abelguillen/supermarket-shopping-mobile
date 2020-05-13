@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/_dynamic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/titulo" />
@@ -45,7 +44,7 @@
 
     <Spinner
         android:id="@+id/s_category"
-        android:layout_width="213dp"
+        android:layout_width="215dp"
         android:layout_height="44dp"
         android:entries="@array/category_arrays"
         app:layout_constraintBottom_toBottomOf="parent"
