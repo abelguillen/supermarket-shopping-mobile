@@ -1,6 +1,8 @@
 package com.aguillen.supermarketshoppingmobile.model;
 
-public class Article {
+import java.io.Serializable;
+
+public class Article implements Serializable {
 
     private Integer id;
     private String name;

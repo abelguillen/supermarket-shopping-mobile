@@ -100,7 +100,7 @@ public class ArticlesListActivity extends AppCompatActivity {
                 for(Article article : response.body()) {
                     articles.add(article);
                 }
-                adapter = new ArticlesListAdapter(context, articles);
+                adapter = new ArticlesListAdapter(context, articles, ArticlesListActivity.this);
                 lvArticles.setAdapter(adapter);
             }
 

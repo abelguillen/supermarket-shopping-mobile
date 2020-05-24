@@ -20,19 +20,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.aguillen.supermarketshoppingmobile.R;
-import com.aguillen.supermarketshoppingmobile.adapter.ArticlesListAdapter;
 import com.aguillen.supermarketshoppingmobile.model.Article;
 import com.aguillen.supermarketshoppingmobile.service.ArticleService;
 import com.aguillen.supermarketshoppingmobile.util.Environment;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +36,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ArticleCreateActivity extends AppCompatActivity {
+public class ArticleUpdateActivity extends AppCompatActivity {
 
     private EditText etName;
     private EditText etDescription;
@@ -50,11 +46,12 @@ public class ArticleCreateActivity extends AppCompatActivity {
     private Button btExit;
     private Button btSelectImage;
     private String encodedImage;
+    Article article = new Article();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_article);
+        setContentView(R.layout.activity_article_update);
 
         etName = (EditText) findViewById(R.id.et_name);
         etDescription = (EditText) findViewById(R.id.et_description);
@@ -63,6 +60,15 @@ public class ArticleCreateActivity extends AppCompatActivity {
         btSave = (Button) findViewById(R.id.bt_save);
         btExit = (Button) findViewById(R.id.bt_exit);
         btSelectImage = (Button) findViewById(R.id.bt_select_image);
+
+        Intent intent = getIntent();
+        article = (Article) intent.getSerializableExtra("article");
+
+
+
+        etName.setText(article.getName());
+        etDescription.setText(article.getDescription());
+        sCategory.setSelection(getCategoryPosition(article.getCategory()));
 
         encodedImage = "";
 
@@ -76,15 +82,15 @@ public class ArticleCreateActivity extends AppCompatActivity {
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = etName.getText().toString();
-                String description = etDescription.getText().toString();
-                String category = sCategory.getSelectedItem().toString();
-                Article article = new Article(name, description, category, encodedImage);
+                article.setName(etName.getText().toString());
+                article.setDescription(etDescription.getText().toString());
+                article.setCategory(sCategory.getSelectedItem().toString());
+                article.setImage(encodedImage);
                 if(validateArticle(article)) {
-                    saveArticle(getApplicationContext(), article);
+                    updateArticle(getApplicationContext(), article);
                 } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(ArticleCreateActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
-                    builder.setTitle("Nuevo Articulo");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ArticleUpdateActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+                    builder.setTitle("Modificar Articulo");
                     builder.setMessage("El nombre del articulo no puede ser vacio.");
                     builder.setCancelable(false);
                     builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
@@ -103,7 +109,7 @@ public class ArticleCreateActivity extends AppCompatActivity {
         btBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(ArticleCreateActivity.this, ArticlesListActivity.class);
+                Intent i = new Intent(ArticleUpdateActivity.this, ArticlesListActivity.class);
                 finish();
                 startActivity(i);
             }
@@ -113,6 +119,19 @@ public class ArticleCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) { finish(); }
         });
+
+    }
+
+    private Integer getCategoryPosition(String category) {
+        Integer categoryPosition = null;
+        String[] categorysList = getResources().getStringArray(R.array.category_arrays);
+        for(int i=0;i<categorysList.length;i++) {
+            if(categorysList[i].equals(category)) {
+                categoryPosition = i;
+                break;
+            }
+        }
+        return categoryPosition;
     }
 
     private boolean validateArticle(Article article) {
@@ -154,7 +173,7 @@ public class ArticleCreateActivity extends AppCompatActivity {
         return encImage;
     }
 
-    private void saveArticle(Context context, Article article) {
+    private void updateArticle(Context context, Article article) {
 
         String BASE_URL = "";
         try {
@@ -169,12 +188,12 @@ public class ArticleCreateActivity extends AppCompatActivity {
                 .build();
 
         ArticleService service = retrofit.create(ArticleService.class);
-        Call<Article> call = service.create(article);
+        Call<Article> call = service.update(article);
 
         call.enqueue(new Callback<Article>() {
             @Override
             public void onResponse(Call<Article> call, Response<Article> response) {
-                Intent i = new Intent(ArticleCreateActivity.this, ArticlesListActivity.class);
+                Intent i = new Intent(ArticleUpdateActivity.this, ArticlesListActivity.class);
                 finish();
                 startActivity(i);
             }

@@ -1,9 +1,12 @@
 package com.aguillen.supermarketshoppingmobile.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcelable;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +20,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.aguillen.supermarketshoppingmobile.R;
+import com.aguillen.supermarketshoppingmobile.activity.ArticleUpdateActivity;
+import com.aguillen.supermarketshoppingmobile.activity.ArticlesListActivity;
+import com.aguillen.supermarketshoppingmobile.activity.LoginActivity;
+import com.aguillen.supermarketshoppingmobile.activity.MenuActivity;
 import com.aguillen.supermarketshoppingmobile.model.Article;
 import com.aguillen.supermarketshoppingmobile.service.ArticleService;
 import com.aguillen.supermarketshoppingmobile.util.Environment;
@@ -34,11 +41,13 @@ public class ArticlesListAdapter extends BaseAdapter {
     private Context context;
     private List<Article> articles;
     private LayoutInflater inflter;
+    private Activity activity;
 
-    public ArticlesListAdapter(Context context, List<Article> articles) {
+    public ArticlesListAdapter(Context context, List<Article> articles, Activity activity) {
         this.context = context;
         this.articles = articles;
         inflter = (LayoutInflater.from(context));
+        this.activity = activity;
     }
 
     @Override
@@ -66,6 +75,7 @@ public class ArticlesListAdapter extends BaseAdapter {
         TextView category = (TextView) view.findViewById(R.id.tv_category);
         ImageView image = (ImageView) view.findViewById(R.id.iv_image) ;
         Button btDeleteArticle = (Button) view.findViewById(R.id.bt_delete_article);
+        Button btUpdateArticle = (Button) view.findViewById(R.id.bt_update_article);
 
         btDeleteArticle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +98,16 @@ public class ArticlesListAdapter extends BaseAdapter {
                 dialog.show();
                 dialog.getWindow().setBackgroundDrawableResource(android.R.color.background_light);
                 return;
+            }
+        });
+
+        btUpdateArticle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ArticleUpdateActivity.class);
+                intent.putExtra("article", articles.get(i));
+                context.startActivity(intent);
+                activity.finish();
             }
         });
 
