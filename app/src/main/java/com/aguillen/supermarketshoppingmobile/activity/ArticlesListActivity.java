@@ -62,6 +62,7 @@ public class ArticlesListActivity extends AppCompatActivity {
                 Intent i = new Intent(ArticlesListActivity.this, MenuActivity.class);
                 finish();
                 startActivity(i);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
 
@@ -71,6 +72,7 @@ public class ArticlesListActivity extends AppCompatActivity {
                 Intent i = new Intent(ArticlesListActivity.this, ArticleCreateActivity.class);
                 finish();
                 startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }

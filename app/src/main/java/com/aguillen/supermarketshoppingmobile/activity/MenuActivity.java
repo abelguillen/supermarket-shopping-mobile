@@ -30,6 +30,7 @@ public class MenuActivity extends AppCompatActivity {
                 Intent i = new Intent(MenuActivity.this, ArticlesListActivity.class);
                 finish();
                 startActivity(i);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 

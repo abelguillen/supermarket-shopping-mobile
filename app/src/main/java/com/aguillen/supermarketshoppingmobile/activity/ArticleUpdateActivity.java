@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.aguillen.supermarketshoppingmobile.R;
@@ -45,6 +46,7 @@ public class ArticleUpdateActivity extends AppCompatActivity {
     private Button btSave;
     private Button btExit;
     private Button btSelectImage;
+    private ImageView ivOk;
     private String encodedImage;
     Article article = new Article();
 
@@ -60,6 +62,7 @@ public class ArticleUpdateActivity extends AppCompatActivity {
         btSave = (Button) findViewById(R.id.bt_save);
         btExit = (Button) findViewById(R.id.bt_exit);
         btSelectImage = (Button) findViewById(R.id.bt_select_image);
+        ivOk = (ImageView) findViewById(R.id.iv_ok);
 
         Intent intent = getIntent();
         article = (Article) intent.getSerializableExtra("article");
@@ -161,6 +164,7 @@ public class ArticleUpdateActivity extends AppCompatActivity {
             }
             Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
             encodedImage = encodeImage(selectedImage);
+            ivOk.setVisibility(View.VISIBLE);
         }
     }
 
