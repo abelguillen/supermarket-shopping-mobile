@@ -21,25 +21,19 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.aguillen.supermarketshoppingmobile.R;
-import com.aguillen.supermarketshoppingmobile.adapter.ArticlesListAdapter;
+import com.aguillen.supermarketshoppingmobile.dto.ArticleDTO;
 import com.aguillen.supermarketshoppingmobile.model.Article;
-import com.aguillen.supermarketshoppingmobile.service.ArticleService;
-import com.aguillen.supermarketshoppingmobile.util.Environment;
+import com.aguillen.supermarketshoppingmobile.service.ArticleServiceImpl;
+import com.aguillen.supermarketshoppingmobile.util.Mapper;
+import com.aguillen.supermarketshoppingmobile.validate.ValidateArticle;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ArticleCreateActivity extends AppCompatActivity {
 
@@ -52,6 +46,7 @@ public class ArticleCreateActivity extends AppCompatActivity {
     private Button btSelectImage;
     private ImageView ivOk;
     private String encodedImage;
+    private ArticleServiceImpl service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +61,7 @@ public class ArticleCreateActivity extends AppCompatActivity {
         btExit = (Button) findViewById(R.id.bt_exit);
         btSelectImage = (Button) findViewById(R.id.bt_select_image);
         ivOk = (ImageView) findViewById(R.id.iv_ok);
+        service = new ArticleServiceImpl();
 
         encodedImage = "";
 
@@ -83,8 +79,8 @@ public class ArticleCreateActivity extends AppCompatActivity {
                 String description = etDescription.getText().toString();
                 String category = sCategory.getSelectedItem().toString();
                 Article article = new Article(name, description, category, encodedImage);
-                if(validateArticle(article)) {
-                    saveArticle(getApplicationContext(), article);
+                if(ValidateArticle.validateArticle(article)) {
+                    saveArticle(getApplicationContext(), Mapper.buildDTO(article));
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ArticleCreateActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
                     builder.setTitle("Nuevo Articulo");
@@ -116,14 +112,6 @@ public class ArticleCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) { finish(); }
         });
-    }
-
-    private boolean validateArticle(Article article) {
-        if(!article.getName().isEmpty() && article.getName() != null) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     private void uploadImage() {
@@ -158,33 +146,20 @@ public class ArticleCreateActivity extends AppCompatActivity {
         return encImage;
     }
 
-    private void saveArticle(Context context, Article article) {
+    private void saveArticle(Context context, ArticleDTO articleDTO) {
 
-        String BASE_URL = "";
-        try {
-            BASE_URL = Environment.getHost();
-        } catch (Exception ex) {
-            Log.e("Connection Error", ex.getMessage());
-        }
+        Call<ArticleDTO> call = service.getArticleService().create(articleDTO);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ArticleService service = retrofit.create(ArticleService.class);
-        Call<Article> call = service.create(article);
-
-        call.enqueue(new Callback<Article>() {
+        call.enqueue(new Callback<ArticleDTO>() {
             @Override
-            public void onResponse(Call<Article> call, Response<Article> response) {
+            public void onResponse(Call<ArticleDTO> call, Response<ArticleDTO> response) {
                 Intent i = new Intent(ArticleCreateActivity.this, ArticlesListActivity.class);
                 finish();
                 startActivity(i);
             }
 
             @Override
-            public void onFailure(Call<Article> call, Throwable t) {
+            public void onFailure(Call<ArticleDTO> call, Throwable t) {
                 Log.e("Connection error: ", t.getMessage());
             }
         });

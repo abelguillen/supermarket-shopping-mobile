@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.aguillen.supermarketshoppingmobile.R;
 import com.aguillen.supermarketshoppingmobile.adapter.ArticlesListAdapter;
+import com.aguillen.supermarketshoppingmobile.dto.ArticleDTO;
 import com.aguillen.supermarketshoppingmobile.model.Article;
-import com.aguillen.supermarketshoppingmobile.service.ArticleService;
-import com.aguillen.supermarketshoppingmobile.util.Environment;
+import com.aguillen.supermarketshoppingmobile.service.ArticleServiceImpl;
+import com.aguillen.supermarketshoppingmobile.util.Mapper;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,8 +26,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ArticlesListActivity extends AppCompatActivity {
 
@@ -37,12 +36,14 @@ public class ArticlesListActivity extends AppCompatActivity {
     Button btExit;
     Button btNewArticle;
     ProgressBar pbArticlesList;
+    private ArticleServiceImpl service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_articles);
 
+        service = new ArticleServiceImpl();
         getArticles(getApplicationContext());
 
         lvArticles = (ListView)findViewById(R.id.lv_articles_list);
@@ -78,36 +79,22 @@ public class ArticlesListActivity extends AppCompatActivity {
     }
 
     private void getArticles(Context context) {
-        String BASE_URL = "";
-        try {
-            BASE_URL = Environment.getHost();
-        } catch (Exception ex) {
-            Log.e("Connection Error", ex.getMessage());
-        }
-
         articles = new ArrayList<Article>();
+        Call<List<ArticleDTO>> call = service.getArticleService().getAll();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ArticleService service = retrofit.create(ArticleService.class);
-        Call<List<Article>> call = service.getAll();
-
-        call.enqueue(new Callback<List<Article>>() {
+        call.enqueue(new Callback<List<ArticleDTO>>() {
             @Override
-            public void onResponse(Call<List<Article>> call, Response<List<Article>> response) {
+            public void onResponse(Call<List<ArticleDTO>> call, Response<List<ArticleDTO>> response) {
                 pbArticlesList.setVisibility(View.INVISIBLE);
-                for(Article article : response.body()) {
-                    articles.add(article);
+                for(ArticleDTO articleDTO : response.body()) {
+                    articles.add(Mapper.buildBO(articleDTO));
                 }
                 adapter = new ArticlesListAdapter(context, articles, ArticlesListActivity.this);
                 lvArticles.setAdapter(adapter);
             }
 
             @Override
-            public void onFailure(Call<List<Article>> call, Throwable t) {
+            public void onFailure(Call<List<ArticleDTO>> call, Throwable t) {
                 pbArticlesList.setVisibility(View.INVISIBLE);
                 Log.e("Get Articles error: ", t.getMessage());
                 AlertDialog.Builder builder = new AlertDialog.Builder(ArticlesListActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);

@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Parcelable;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,12 +20,12 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.aguillen.supermarketshoppingmobile.R;
 import com.aguillen.supermarketshoppingmobile.activity.ArticleUpdateActivity;
-import com.aguillen.supermarketshoppingmobile.activity.ArticlesListActivity;
-import com.aguillen.supermarketshoppingmobile.activity.LoginActivity;
-import com.aguillen.supermarketshoppingmobile.activity.MenuActivity;
+import com.aguillen.supermarketshoppingmobile.dto.ArticleDTO;
 import com.aguillen.supermarketshoppingmobile.model.Article;
 import com.aguillen.supermarketshoppingmobile.service.ArticleService;
+import com.aguillen.supermarketshoppingmobile.service.ArticleServiceImpl;
 import com.aguillen.supermarketshoppingmobile.util.Environment;
+import com.aguillen.supermarketshoppingmobile.util.Mapper;
 
 import java.util.List;
 
@@ -42,12 +41,14 @@ public class ArticlesListAdapter extends BaseAdapter {
     private List<Article> articles;
     private LayoutInflater inflter;
     private Activity activity;
+    private ArticleServiceImpl service;
 
     public ArticlesListAdapter(Context context, List<Article> articles, Activity activity) {
         this.context = context;
         this.articles = articles;
         inflter = (LayoutInflater.from(context));
         this.activity = activity;
+        this.service = new ArticleServiceImpl();
     }
 
     @Override
@@ -87,7 +88,7 @@ public class ArticlesListAdapter extends BaseAdapter {
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteArticle(articles.get(i));
+                        deleteArticle(Mapper.buildDTO(articles.get(i)), articles.get(i));
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -123,21 +124,9 @@ public class ArticlesListAdapter extends BaseAdapter {
         return view;
     }
 
-    public void deleteArticle(Article article) {
-        String BASE_URL = "";
-        try {
-            BASE_URL = Environment.getHost();
-        } catch (Exception ex) {
-            Log.e("Connection Error", ex.getMessage());
-        }
+    public void deleteArticle(ArticleDTO articleDTO, Article article) {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ArticleService service = retrofit.create(ArticleService.class);
-        Call<Boolean> call = service.delete(article.getId());
+        Call<Boolean> call = service.getArticleService().delete(articleDTO.getId());
 
         call.enqueue(new Callback<Boolean>() {
             @Override
