@@ -22,9 +22,7 @@ import com.aguillen.supermarketshoppingmobile.R;
 import com.aguillen.supermarketshoppingmobile.activity.ArticleUpdateActivity;
 import com.aguillen.supermarketshoppingmobile.dto.ArticleDTO;
 import com.aguillen.supermarketshoppingmobile.model.Article;
-import com.aguillen.supermarketshoppingmobile.service.ArticleService;
-import com.aguillen.supermarketshoppingmobile.service.ArticleServiceImpl;
-import com.aguillen.supermarketshoppingmobile.util.Environment;
+import com.aguillen.supermarketshoppingmobile.service.article.ArticleServiceImpl;
 import com.aguillen.supermarketshoppingmobile.util.Mapper;
 
 import java.util.List;
@@ -32,8 +30,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ArticlesListAdapter extends BaseAdapter {
 
@@ -74,7 +70,7 @@ public class ArticlesListAdapter extends BaseAdapter {
         TextView name = (TextView) view.findViewById(R.id.tv_name);
         TextView description = (TextView) view.findViewById(R.id.tv_description);
         TextView category = (TextView) view.findViewById(R.id.tv_category);
-        ImageView image = (ImageView) view.findViewById(R.id.iv_image) ;
+        ImageView image = (ImageView) view.findViewById(R.id.iv_image);
         Button btDeleteArticle = (Button) view.findViewById(R.id.bt_delete_article);
         Button btUpdateArticle = (Button) view.findViewById(R.id.bt_update_article);
 
@@ -88,7 +84,7 @@ public class ArticlesListAdapter extends BaseAdapter {
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteArticle(Mapper.buildDTO(articles.get(i)), articles.get(i));
+                        deleteArticle(Mapper.buildArticleDTO(articles.get(i)), articles.get(i));
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {

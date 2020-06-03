@@ -23,9 +23,8 @@ import android.widget.Spinner;
 import com.aguillen.supermarketshoppingmobile.R;
 import com.aguillen.supermarketshoppingmobile.dto.ArticleDTO;
 import com.aguillen.supermarketshoppingmobile.model.Article;
-import com.aguillen.supermarketshoppingmobile.service.ArticleService;
-import com.aguillen.supermarketshoppingmobile.service.ArticleServiceImpl;
-import com.aguillen.supermarketshoppingmobile.util.Environment;
+import com.aguillen.supermarketshoppingmobile.service.article.ArticleServiceImpl;
+import com.aguillen.supermarketshoppingmobile.util.Image;
 import com.aguillen.supermarketshoppingmobile.util.Mapper;
 import com.aguillen.supermarketshoppingmobile.validate.ValidateArticle;
 
@@ -36,8 +35,6 @@ import java.io.InputStream;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ArticleUpdateActivity extends AppCompatActivity {
 
@@ -90,9 +87,11 @@ public class ArticleUpdateActivity extends AppCompatActivity {
                 article.setName(etName.getText().toString());
                 article.setDescription(etDescription.getText().toString());
                 article.setCategory(sCategory.getSelectedItem().toString());
-                article.setImage(encodedImage);
+                if(!encodedImage.isEmpty()) {
+                    article.setImage(encodedImage);
+                }
                 if(ValidateArticle.validateArticle(article)) {
-                    updateArticle(getApplicationContext(), Mapper.buildDTO(article));
+                    updateArticle(getApplicationContext(), Mapper.buildArticleDTO(article));
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ArticleUpdateActivity.this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
                     builder.setTitle("Modificar Articulo");

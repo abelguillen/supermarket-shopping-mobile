@@ -1,4 +1,4 @@
-package com.aguillen.supermarketshoppingmobile.service;
+package com.aguillen.supermarketshoppingmobile.service.article;
 
 import android.util.Log;
 

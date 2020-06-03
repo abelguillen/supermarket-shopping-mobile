@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.aguillen.supermarketshoppingmobile.R;
 
-public class RowArticleActivity extends AppCompatActivity {
+public class ShoppingListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_row_article);
+        setContentView(R.layout.activity_shopping_list);
     }
 }
