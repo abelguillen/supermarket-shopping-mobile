@@ -4,6 +4,7 @@ import com.aguillen.supermarketshoppingmobile.dto.ArticleDTO;
 import com.aguillen.supermarketshoppingmobile.dto.CategoryDTO;
 import com.aguillen.supermarketshoppingmobile.model.Article;
 import com.aguillen.supermarketshoppingmobile.model.Category;
+import com.aguillen.supermarketshoppingmobile.model.Shopping;
 
 import org.modelmapper.ModelMapper;
 
@@ -32,6 +33,13 @@ public class Mapper {
         return articlesDTO;
     }
 
+    public static List<Shopping> buildShoppingList(List<Article> articles) {
+        List<Shopping> shoppingList = new ArrayList<Shopping>();
+        for(Article article : articles) {
+            shoppingList.add(new Shopping(article, 0));
+        }
+        return shoppingList;
+    }
 
     // Category
 

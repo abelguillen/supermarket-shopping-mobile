@@ -24,7 +24,7 @@ import com.aguillen.supermarketshoppingmobile.R;
 import com.aguillen.supermarketshoppingmobile.dto.ArticleDTO;
 import com.aguillen.supermarketshoppingmobile.model.Article;
 import com.aguillen.supermarketshoppingmobile.service.article.ArticleServiceImpl;
-import com.aguillen.supermarketshoppingmobile.util.Image;
+import com.aguillen.supermarketshoppingmobile.util.Images;
 import com.aguillen.supermarketshoppingmobile.util.Mapper;
 import com.aguillen.supermarketshoppingmobile.validate.ValidateArticle;
 
@@ -79,7 +79,7 @@ public class ArticleCreateActivity extends AppCompatActivity {
                 String name = etName.getText().toString();
                 String description = etDescription.getText().toString();
                 String category = sCategory.getSelectedItem().toString();
-                if(encodedImage.isEmpty()) encodedImage = Image.NO_IMAGE;
+                if(encodedImage.isEmpty()) encodedImage = Images.NO_IMAGE;
                 Article article = new Article(name, description, category, encodedImage);
                 if(ValidateArticle.validateArticle(article)) {
                     saveArticle(getApplicationContext(), Mapper.buildArticleDTO(article));

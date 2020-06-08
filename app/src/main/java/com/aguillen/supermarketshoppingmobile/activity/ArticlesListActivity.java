@@ -109,7 +109,8 @@ public class ArticlesListActivity extends AppCompatActivity {
                 }
 
                 pagerAdapter = new PagerController(getSupportFragmentManager(), tabLayout.getTabCount(),
-                        nameTabsList, getApplicationContext(), ArticlesListActivity.this, pbArticlesList);
+                        nameTabsList, getApplicationContext(), ArticlesListActivity.this,
+                        pbArticlesList, true);
                 viewPager.setAdapter(pagerAdapter);
 
                 tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

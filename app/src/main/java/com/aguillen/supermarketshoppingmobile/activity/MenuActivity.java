@@ -37,7 +37,7 @@ public class MenuActivity extends AppCompatActivity {
         btGenerateList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MenuActivity.this, TabbedActivity.class);
+                Intent i = new Intent(MenuActivity.this, ShoppingListActivity.class);
                 finish();
                 startActivity(i);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

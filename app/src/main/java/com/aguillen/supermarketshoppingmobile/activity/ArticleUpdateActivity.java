@@ -24,7 +24,6 @@ import com.aguillen.supermarketshoppingmobile.R;
 import com.aguillen.supermarketshoppingmobile.dto.ArticleDTO;
 import com.aguillen.supermarketshoppingmobile.model.Article;
 import com.aguillen.supermarketshoppingmobile.service.article.ArticleServiceImpl;
-import com.aguillen.supermarketshoppingmobile.util.Image;
 import com.aguillen.supermarketshoppingmobile.util.Mapper;
 import com.aguillen.supermarketshoppingmobile.validate.ValidateArticle;
 

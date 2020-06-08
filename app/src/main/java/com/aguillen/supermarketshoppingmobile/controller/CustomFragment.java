@@ -17,8 +17,10 @@ import android.widget.ProgressBar;
 
 import com.aguillen.supermarketshoppingmobile.R;
 import com.aguillen.supermarketshoppingmobile.adapter.ArticlesListAdapter;
+import com.aguillen.supermarketshoppingmobile.adapter.ShoppingListAdapter;
 import com.aguillen.supermarketshoppingmobile.dto.ArticleDTO;
 import com.aguillen.supermarketshoppingmobile.model.Article;
+import com.aguillen.supermarketshoppingmobile.model.Shopping;
 import com.aguillen.supermarketshoppingmobile.service.article.ArticleServiceImpl;
 import com.aguillen.supermarketshoppingmobile.util.Mapper;
 
@@ -38,14 +40,29 @@ public class CustomFragment extends Fragment {
     private ProgressBar pbArticlesList;
     ListView lvArticles;
     List<Article> articles;
-    ArticlesListAdapter adapter;
+    ArticlesListAdapter articlesListAdapter;
+    ShoppingListAdapter shoppingListAdapter;
+    private boolean isArticlesList;
+    private List<Shopping> shoppingList;
 
-    public CustomFragment(String category, Context context,
-                          Activity activity, ProgressBar pbArticlesList) {
+    public CustomFragment(String category, Context context, Activity activity,
+                          ProgressBar pbArticlesList, boolean isArticlesList) {
         this.category = category;
         this.context = context;
         this.activity = activity;
         this.pbArticlesList = pbArticlesList;
+        this.isArticlesList = isArticlesList;
+    }
+
+    public CustomFragment(String category, Context context, Activity activity,
+                          ProgressBar pbArticlesList, boolean isArticlesList,
+                          List<Shopping> shoppingList) {
+        this.category = category;
+        this.context = context;
+        this.activity = activity;
+        this.pbArticlesList = pbArticlesList;
+        this.isArticlesList = isArticlesList;
+        this.shoppingList = shoppingList;
     }
 
     @Override
@@ -56,14 +73,21 @@ public class CustomFragment extends Fragment {
 
         pbArticlesList.setVisibility(View.VISIBLE);
         service = new ArticleServiceImpl();
-        getArticles(context, category);
 
         lvArticles = (ListView)view.findViewById(R.id.lv_articles_list);
+
+        if(isArticlesList) {
+            getArticlesByCategory(context, category);
+        } else {
+            pbArticlesList.setVisibility(View.INVISIBLE);
+            shoppingListAdapter = new ShoppingListAdapter(context, shoppingList, activity);
+            lvArticles.setAdapter(shoppingListAdapter);
+        }
 
         return view;
     }
 
-    private void getArticles(Context context, String category) {
+    private void getArticlesByCategory(Context context, String category) {
         articles = new ArrayList<Article>();
         Call<List<ArticleDTO>> call = service.getArticleService().getByCategory(category);
 
@@ -74,8 +98,8 @@ public class CustomFragment extends Fragment {
                 for(ArticleDTO articleDTO : response.body()) {
                     articles.add(Mapper.buildArticleBO(articleDTO));
                 }
-                adapter = new ArticlesListAdapter(context, articles, activity);
-                lvArticles.setAdapter(adapter);
+                articlesListAdapter = new ArticlesListAdapter(context, articles, activity);
+                lvArticles.setAdapter(articlesListAdapter);
             }
 
             @Override

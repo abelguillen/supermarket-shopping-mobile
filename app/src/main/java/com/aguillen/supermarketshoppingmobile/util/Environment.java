@@ -7,8 +7,8 @@ import java.net.InetAddress;
 
 public class Environment {
 
-//    private static final String ENVIRONMENT = "PRD";
-    private static final String ENVIRONMENT = "DEV";
+    private static final String ENVIRONMENT = "PRD";
+//    private static final String ENVIRONMENT = "DEV";
     private static final String HOST_PRD = "https://supermarketshopping.herokuapp.com";
     private static final String PORT = "8080";
 
