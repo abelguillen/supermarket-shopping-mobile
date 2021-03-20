@@ -63,12 +63,21 @@ public class ShoppingListAdapter extends BaseAdapter {
         TextView category = (TextView) view.findViewById(R.id.tv_category);
         ImageView image = (ImageView) view.findViewById(R.id.iv_image);
         Button btAddOneArticle = (Button) view.findViewById(R.id.bt_add_one_article);
+        Button btDeleteOneArticle = (Button) view.findViewById(R.id.bt_delete_one_article);
         TextView tvQuantity = (TextView) view.findViewById(R.id.tv_quantity);
 
         btAddOneArticle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 shoppingList.get(i).setCantidad(shoppingList.get(i).getCantidad() + 1);
+                tvQuantity.setText(shoppingList.get(i).getCantidad().toString());
+            }
+        });
+
+        btDeleteOneArticle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shoppingList.get(i).setCantidad(shoppingList.get(i).getCantidad() - 1);
                 tvQuantity.setText(shoppingList.get(i).getCantidad().toString());
             }
         });
