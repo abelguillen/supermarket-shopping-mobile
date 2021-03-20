@@ -7,8 +7,8 @@ import java.net.InetAddress;
 
 public class Environment {
 
-    private static final String ENVIRONMENT = "PRD";
-//    private static final String ENVIRONMENT = "DEV";
+    //private static final String ENVIRONMENT = "PRD";
+    private static final String ENVIRONMENT = "DEV";
     private static final String HOST_PRD = "https://supermarketshopping.herokuapp.com";
     private static final String PORT = "8080";
 
@@ -31,7 +31,7 @@ public class Environment {
                 return HOST_PRD;
             } else if (ENVIRONMENT.equals("DEV")) {
                 //return "http://" + getIp() + ":" + PORT;
-                return "http://192.168.100.158:8080";
+                return "http://172.27.192.1:8080";
             } else {
                 return null;
             }
